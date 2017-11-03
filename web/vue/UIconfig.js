@@ -38,7 +38,6 @@ if (fs.existsSync(filename)) {
 } else {
   fs.writeFile(filename, JSON.stringify(cfg, null, 2) , 'utf-8');
 }
-console.log(JSON.stringify(cfg,null,4));
 
 const CONFIG = cfg;
 
