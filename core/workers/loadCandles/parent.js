@@ -64,6 +64,7 @@ module.exports = (config, callback) => {
     if(m === 'loadCandles Finished') { //AK
       child.send('Exit-Child');  //AK
     }  //AK
+    
   });
 
   child.on('exit', code => {
