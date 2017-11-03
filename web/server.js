@@ -49,6 +49,7 @@ router.get('/api/configPart/:part', require(ROUTE('configPart')));
 router.get('/api/apiKeys', apiKeys.get);
 
 const listWraper = require(ROUTE('list'));
+router.get('/UIconfig2.js',require(ROUTE('UIconfig2')));
 router.get('/api/imports', listWraper('imports'));
 router.get('/api/gekkos', listWraper('gekkos'));
 router.get('/api/exchanges', require(ROUTE('exchanges')));
