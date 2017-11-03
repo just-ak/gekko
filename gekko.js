@@ -42,6 +42,10 @@ const dirs = util.dirs();
 if(util.launchUI())
   return require(util.dirs().web + 'server');
 
+
+if ((process.execArgv.indexOf('--debug')   !== -1) || (inspect = process.execArgv.indexOf('--inspect') !== -1))   
+  global.debugPort = 9230;
+
 const pipeline = require(dirs.core + 'pipeline');
 const config = util.getConfig();
 const mode = util.gekkoMode();

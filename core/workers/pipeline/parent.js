@@ -1,6 +1,19 @@
 var fork = require('child_process').fork;
 
 module.exports = (mode, config, callback) => {
+
+  var debug   = process.execArgv.indexOf('--debug')   !== -1;
+  var inspect = process.execArgv.indexOf('--inspect') !== -1;
+  if(debug)   {  
+    console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
+    process.execArgv.push('--debug='   + (global.debugPort++)); 
+  }
+  if(inspect) { 
+    console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
+    process.execArgv.push('--inspect=' + (global.debugPort++)); 
+  }
+
+
   var child = fork(__dirname + '/child');
 
   // How we should handle client messages depends
