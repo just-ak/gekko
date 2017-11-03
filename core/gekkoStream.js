@@ -44,8 +44,10 @@ Gekko.prototype.shutdown = function() {
       c.finalize();
   });
 
-  if(env === 'child-process')
-    process.exit(0);
+  if(env === 'child-process'){
+    process.send('gekkoStream Finished'); //AK
+    //process.exit(0); //AK
+  }
 }
 
 module.exports = Gekko;

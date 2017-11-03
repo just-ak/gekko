@@ -74,9 +74,10 @@ Market.prototype.processCandles = function(err, candles) {
     if(this.ended) {
       this.closed = true;
       this.reader.close();
-      process.send('Backtest Finished');
-      //this.emit('end');
+      process.send('Backtest Finished'); //AK
+      //this.emit('end'); //AK
     } else {
+      process.send('Backtest Finished - No Candles'); //AK
       util.die('Query returned no candles (do you have local data for the specified range?)');
     }
   }

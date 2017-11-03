@@ -58,7 +58,12 @@ module.exports = (config, callback) => {
 
     // else we are done and have candles!
     done(null, m);
-    child.kill('SIGINT');
+
+    //child.kill('SIGINT');
+
+    if(m === 'loadCandles Finished') { //AK
+      child.send('Exit-Child');  //AK
+    }  //AK
   });
 
   child.on('exit', code => {

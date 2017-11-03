@@ -32,9 +32,9 @@ module.exports = (mode, config, callback) => {
 
     handle.message(m);
     
-    if(m === 'Backtest Finished') {
-      child.send('Exit-Child');
-    }
+    if ((m === 'Backtest Finished') || ( m === 'Backtest Finished - No Candles')) { //AK
+      child.send('Exit-Child'); //AK
+    } //AK
   });
 
   if (mode !='backtest') {

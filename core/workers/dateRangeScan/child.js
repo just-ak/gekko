@@ -19,8 +19,15 @@ ipc.on('start', config => {
     (err, ranges, reader) => {
       reader.close();
       ipc.send('ranges', ranges)
-      process.exit(0);
+      ipc.send('ranges Finished') //AK
+      //process.exit(0);  //AK
     }
   );
+
+});
+
+ipc.on('message', (m) => {  //AK
+  if(m.what === 'Exit-Child') //AK
+    process.exit(); //AK
 });
 

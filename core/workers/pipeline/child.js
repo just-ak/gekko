@@ -45,7 +45,7 @@ process.on('message', function(m) {
   if(m.what === 'start') 
     start(m.mode, m.config);
   
-  if(m.what === 'Exit-Child')
-    process.exit();
+  if(m.what === 'Exit-Child')  //AK
+    process.exit();  //AK
    
 });
