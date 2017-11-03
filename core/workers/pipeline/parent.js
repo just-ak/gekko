@@ -12,16 +12,29 @@ module.exports = (mode, config, callback) => {
     mode: mode,
     config: config
   }
+  var totalMessages = 0;
 
   child.on('message', function(m) {
-
+    totalMessages++;
     if(m === 'ready')
       return child.send(message);
 
     handle.message(m);
+    
+    if(m === 'Backtest Finished') {
+      child.send('Exit-Child');
+    }
   });
 
-  child.on('exit', handle.exit);
+  if (mode !='backtest') {
+    /*
+    Exit Child by using Message Handshake to perform end
+    Currently only tested with the GUI Backtest
+    */
+    child.on('exit', handle.exit);
+  } else {
+    child.on('exit',function(m){ console.log(`Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
+  }
 
   return child;
 }

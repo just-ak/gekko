@@ -42,6 +42,10 @@ var start = (mode, config) => {
 process.send('ready');
 
 process.on('message', function(m) {
-  if(m.what === 'start')
+  if(m.what === 'start') 
     start(m.mode, m.config);
+  
+  if(m.what === 'Exit-Child')
+    process.exit();
+   
 });

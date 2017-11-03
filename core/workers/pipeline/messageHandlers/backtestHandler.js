@@ -7,6 +7,8 @@ module.exports = done => {
   var roundtrips = []
   var candles = [];
   var report = false;
+  // Simple timing added to track timeouts/messing problems
+  var startTiming = new Date();
 
   return {
     message: message => {
@@ -22,17 +24,29 @@ module.exports = done => {
 
       else if(message.type === 'report')
         report = message.report;
-    },
-    exit: status => {
-      if(status !== 0)
-        done('Child process has died.');
-      else
+
+      else if (message === 'Backtest Finished') {
+        var end = new Date() - this.startTiming;
+        console.log("Backtest Finished, Wrapping Up Duration : %dms", end);
         done(null, {
           trades: trades,
           candles: candles,
           report: report,
           roundtrips: roundtrips
         });
+      }
+    },
+    exit: status => {
+      if(status !== 0)
+        done('Child process has died.');
+        /* else
+          done(null, {
+            trades: trades,
+            candles: candles,
+            report: report,
+            roundtrips: roundtrips
+          });
+        */
     }
   }
 }
