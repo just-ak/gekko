@@ -19,7 +19,7 @@
   it is working.
 
 */
-
+global.debugPort = 9230;
 console.log(`
     ______   ________  __    __  __    __   ______
    /      \\ /        |/  |  /  |/  |  /  | /      \\
@@ -41,6 +41,8 @@ const dirs = util.dirs();
 
 if(util.launchUI())
   return require(util.dirs().web + 'server');
+
+
 
 const pipeline = require(dirs.core + 'pipeline');
 const config = util.getConfig();
