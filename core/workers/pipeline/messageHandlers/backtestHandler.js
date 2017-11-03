@@ -7,9 +7,7 @@ module.exports = done => {
   var roundtrips = []
   var candles = [];
   var report = false;
-  // Simple timing added to track timeouts/messing problems
-  var startTiming = new Date();
-
+  
   return {
     message: message => {
 
@@ -26,8 +24,6 @@ module.exports = done => {
         report = message.report;
 
       else if (message === 'Backtest Finished') {
-        var end = new Date() - this.startTiming;
-        console.log("Backtest Finished, Wrapping Up Duration : %dms", end);
         done(null, {
           trades: trades,
           candles: candles,
