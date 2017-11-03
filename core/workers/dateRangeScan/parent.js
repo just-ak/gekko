@@ -1,6 +1,13 @@
 var ForkTask = require('relieve').tasks.ForkTask
 var fork = require('child_process').fork
-
+if(process.execArgv.indexOf('--debug')   !== -1)   {  
+  console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
+  process.execArgv.push('--debug='   + (global.debugPort++)); 
+}
+if( process.execArgv.indexOf('--inspect') !== -1) { 
+  console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
+  process.execArgv.push('--inspect=' + (global.debugPort++)); 
+}
 module.exports = function(config, done) {
   task = new ForkTask(fork(__dirname + '/child'));
 

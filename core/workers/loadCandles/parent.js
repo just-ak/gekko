@@ -31,7 +31,14 @@
 //   console.log('data', data.length);
 // })
 
-
+if(process.execArgv.indexOf('--debug')   !== -1)   {  
+  console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
+  process.execArgv.push('--debug='   + (global.debugPort++)); 
+}
+if( process.execArgv.indexOf('--inspect') !== -1) { 
+  console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
+  process.execArgv.push('--inspect=' + (global.debugPort++)); 
+}
 const fork = require('child_process').fork;
 const _ = require('lodash');
 
