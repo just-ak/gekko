@@ -2,13 +2,11 @@ var fork = require('child_process').fork;
 
 module.exports = (mode, config, callback) => {
 
-  var debug   = process.execArgv.indexOf('--debug')   !== -1;
-  var inspect = process.execArgv.indexOf('--inspect') !== -1;
-  if(debug)   {  
+  if(process.execArgv.indexOf('--debug')   !== -1)   {  
     console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
     process.execArgv.push('--debug='   + (global.debugPort++)); 
   }
-  if(inspect) { 
+  if( process.execArgv.indexOf('--inspect') !== -1) { 
     console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
     process.execArgv.push('--inspect=' + (global.debugPort++)); 
   }

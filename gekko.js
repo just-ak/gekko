@@ -19,7 +19,7 @@
   it is working.
 
 */
-
+global.debugPort = 9230;
 console.log(`
     ______   ________  __    __  __    __   ______
    /      \\ /        |/  |  /  |/  |  /  | /      \\
@@ -43,8 +43,6 @@ if(util.launchUI())
   return require(util.dirs().web + 'server');
 
 
-if ((process.execArgv.indexOf('--debug')   !== -1) || (inspect = process.execArgv.indexOf('--inspect') !== -1))   
-  global.debugPort = 9230;
 
 const pipeline = require(dirs.core + 'pipeline');
 const config = util.getConfig();
