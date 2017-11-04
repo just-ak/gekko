@@ -53,6 +53,7 @@ module.exports = (config, callback) => {
   const done = _.once(callback);
 
   child.on('message', function(m) {
+    
     if(m === 'ready')
       return child.send(message);
 
@@ -60,14 +61,13 @@ module.exports = (config, callback) => {
     done(null, m);
 
     //child.kill('SIGINT');
-
-    if(m === 'loadCandles Finished') { //AK
-      child.send('Exit-Child');  //AK
-    }  //AK
+    child.send('Exit-Child');
+   
   });
 
   child.on('exit', code => {
     if(code !== 0)
       done('ERROR, unable to load candles, please check the console.');
   });
+  child.on('exit',function(m){ console.log(`loadCandles Child Exited`);});
 }
