@@ -19,6 +19,31 @@
   it is working.
 
 */
+console.log(`
+______   ________  __    __  __    __   ______
+/      \\ /        |/  |  /  |/  |  /  | /      \\
+/$$$$$$  |$$$$$$$$/ $$ | /$$/ $$ | /$$/ /$$$$$$  |
+$$ | _$$/ $$ |__    $$ |/$$/  $$ |/$$/  $$ |  $$ |
+$$ |/    |$$    |   $$  $$<   $$  $$<   $$ |  $$ |
+$$ |$$$$ |$$$$$/    $$$$$  \\  $$$$$  \\  $$ |  $$ |
+$$ \\__$$ |$$ |_____ $$ |$$  \\ $$ |$$  \\ $$ \\__$$ |
+$$    $$/ $$       |$$ | $$  |$$ | $$  |$$    $$/ 
+$$$$$$/  $$$$$$$$/ $$/   $$/ $$/   $$/  $$$$$$/
+`);
+console.log('Log redirected to ./debug.log');
+
+var fs = require('fs');
+var utilWriteOverLog = require('util');
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+console.log = function(d) { 
+  // https://stackoverflow.com/questions/31978347/fs-writefile-in-a-promise-asynchronous-synchronous-stuff
+  log_file.write(utilWriteOverLog.format.apply(null, arguments) + '\n');
+  //logStdout.write(util.format.apply(null, arguments) + '\n');
+
+ // log_file.write(utilWriteOverLog.format(d) + '\n');
+  // log_stdout.write(utils.format(d) + '\n');
+};
 global.debugPort = 9230;
 console.log(`
     ______   ________  __    __  __    __   ______
