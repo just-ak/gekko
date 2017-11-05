@@ -18,8 +18,10 @@ module.exports = cb => {
         console.log(message.log);
     },
     exit: status => {
-      if(status !== 0)
+      if(status !== 0){
+        console.log('importerHandler - Child Process Died'); //AK
         return cb('Child process has died.');
+      }
       else
         cb(null, { done: true });
     }

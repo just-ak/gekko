@@ -27,4 +27,5 @@ module.exports = function(config, done) {
       child.send('Exit-Child');  //AK
     }  //AK
   });
+  child.on('exit',function(m){ console.log(`dateRangeScan Child Exited`);});
 }

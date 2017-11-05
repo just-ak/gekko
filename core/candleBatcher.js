@@ -12,6 +12,9 @@
 var _ = require('lodash');
 var util = require(__dirname + '/util');
 
+//var dirs = util.dirs();
+//var log = require(dirs.core + 'log');
+
 var CandleBatcher = function(candleSize) {
   if(!_.isNumber(candleSize))
     throw 'candleSize is not a number';
@@ -25,13 +28,15 @@ var CandleBatcher = function(candleSize) {
 util.makeEventEmitter(CandleBatcher);
 
 CandleBatcher.prototype.write = function(candles) {
-  if(!_.isArray(candles))
+  if(!_.isArray(candles)) {
+    //log.debug('Candle Array was empty,  throw error !!!'); //AK
     throw 'candles is not an array';
-
-  _.each(candles, function(candle) {
-    this.smallCandles.push(candle);
-    this.check();
-  }, this);
+  } else { //AK
+    _.each(candles, function(candle) {
+      this.smallCandles.push(candle);
+      this.check();
+    }, this);
+  } //AK
 }
 
 CandleBatcher.prototype.check = function() {
