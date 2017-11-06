@@ -13,6 +13,7 @@ if( process.execArgv.indexOf('--inspect') !== -1) {
 module.exports = function(config, done) {
   child = new ForkTask(fork(__dirname + '/child'));
 
+  try{
   child.send('start', config);
 
   child.once('ranges', ranges => {
@@ -28,4 +29,18 @@ module.exports = function(config, done) {
     }  //AK
   });
   child.on('exit',function(m){ console.log(`dateRangeScan Child Exited`);});
+  child.on('error',function(err) {
+    console.log('CHILD Error  : '+err );
+    console.log('CHILD Error Stack :'+err.stack );});
+
+  child.on('uncaughtException',function(err) {
+    console.log('CHILD uncaughtException:'+err);});
+
+
+
+} catch (err) {
+  console.log('CHILD Error Try/Catch:'+err);
+  console.log('CHILD Error Stack :'+err.stack );
+  
+}
 }

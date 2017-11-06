@@ -15,6 +15,47 @@ const base = require('./baseConfig');
 // requires a post body with a config object
 module.exports = function *() {
   const mode = this.request.body.mode;
+  const modewatch = this.request.body.watch;
+  console.log('Gekko :' + mode +' - '+ JSON.stringify(this.request.body,null,4));
+  // check gekko manager
+  console.log('Gekko Manager :'  + JSON.stringify(gekkoManager,null,4));
+  var newRequest =true;
+
+if (mode ===  'realtime') {
+  console.log('Check Realtime');
+  _.each(gekkoManager._list,function(gekkoItem){
+    console.log('Checking B....'+JSON.stringify(gekkoItem,null,4));
+    if ((typeof gekkoItem.watch.exchange != "undefined")  &&
+        (typeof modewatch !="undefined")) {
+      console.log(JSON.stringify(modewatch));
+      if ((gekkoItem.watch.exchange === modewatch.exchange) && 
+          (gekkoItem.watch.currency === modewatch.currency ) && 
+          (gekkoItem.watch.asset === modewatch.asset  )) {
+            // already exists.
+          newRequest =false;
+          console.log('Already Exists,should ignore');
+          } else {
+            console.log('Not this one');
+          }
+        }
+  });
+}
+/*
+  LOG      : Gekko Manager :{
+    "_list": [
+        {
+            "watch": {
+                "exchange": "poloniex",
+                "currency": "USDT",
+                "asset": "BTC"
+            },
+            "id": "039767504115905",
+            "startAt": "2017-11-05T13:28:54+00:00",
+            "latest": "2017-11-05T13:52:24+00:00",
+            "mode": "realtime",
+            "type": "watcher",
+            "firstCandle": {
+*/
 
   let config = {};
 
@@ -45,6 +86,7 @@ module.exports = function *() {
   } else {
     var type = '';
   }
+//AK  Check gekko not already running
 
   const id = (Math.random() + '').slice(3);
 
@@ -58,9 +100,10 @@ module.exports = function *() {
       logType = 'papertrader';
   }
   const logger = new Logger(logType);
-
+  console.log('Gekko :' + JSON.stringify(config,null,4));
   console.log('Gekko', id, 'started');
 
+  //AK if (newRequest) {
   const child = pipelineRunner(mode, config, (err, event) => {
 
     if(err) {
@@ -140,7 +183,7 @@ module.exports = function *() {
     }
     broadcast(wsEvent);
   });
-
+  //AK}
   const now = moment.utc().format();
 
   var gekko = {

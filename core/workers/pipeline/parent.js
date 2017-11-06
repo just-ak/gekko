@@ -11,41 +11,57 @@ module.exports = (mode, config, callback) => {
     process.execArgv.push('--inspect=' + (global.debugPort++)); 
   }
 
-
   var child = fork(__dirname + '/child');
 
-  // How we should handle client messages depends
-  // on the mode of the Pipeline that is being ran.
-  var handle = require('./messageHandlers/' + mode + 'Handler')(callback);
+  try{
 
-  var message = {
-    what: 'start',
-    mode: mode,
-    config: config
-  }
-  var totalMessages = 0;
+    // How we should handle client messages depends
+    // on the mode of the Pipeline that is being ran.
+    var handle = require('./messageHandlers/' + mode + 'Handler')(callback);
 
-  child.on('message', function(m) {
-    totalMessages++;
-    if(m === 'ready')
-      return child.send(message);
+    var message = {
+      what: 'start',
+      mode: mode,
+      config: config
+    }
+    var totalMessages = 0;
 
-    handle.message(m);
+    child.on('message', function(m) {
+      totalMessages++;
+      if(m === 'ready')
+        return child.send(message);
+
+      handle.message(m);
+      
+      if ((m === 'Backtest Finished') || ( m === 'Backtest Finished - No Candles')) { //AK
+        child.send('Exit-Child'); //AK
+      } //AK
+    });
+
+    if (mode !='backtest') {
+      /*
+      Exit Child by using Message Handshake to perform end
+      Currently only tested with the GUI Backtest
+      */
+      child.on('exit', handle.exit);
+    } else {
+      child.on('exit',function(m){ console.log(`Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
+    }
+
+    child.on('error',function(err) {
+      console.log('CHILD Error  : '+err );
+      console.log('CHILD Error Stack :'+err.stack );});
+
+    child.on('uncaughtException',function(err) {
+      console.log('CHILD uncaughtException:'+err);});
+
+
+
+  } catch (err) {
+    console.log('CHILD Error Try/Catch:'+err);
+    console.log('CHILD Error Stack :'+err.stack );
     
-    if ((m === 'Backtest Finished') || ( m === 'Backtest Finished - No Candles')) { //AK
-      child.send('Exit-Child'); //AK
-    } //AK
-  });
-
-  if (mode !='backtest') {
-    /*
-    Exit Child by using Message Handshake to perform end
-    Currently only tested with the GUI Backtest
-    */
-    child.on('exit', handle.exit);
-  } else {
-    child.on('exit',function(m){ console.log(`Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
   }
-
   return child;
+  
 }

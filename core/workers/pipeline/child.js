@@ -20,6 +20,7 @@
 
 */
 
+
 var start = (mode, config) => {
   var util = require(__dirname + '/../../util');
 
@@ -40,6 +41,9 @@ var start = (mode, config) => {
 }
 
 process.send('ready');
+
+//AK Not fired : process.on('error',function(err) {console.log('IN CHILD Error:'+err);});
+//AK Not fired : process.on('uncaughtException',function(err) {console.log('IN CHILD uncaughtException:'+err);});
 
 process.on('message', function(m) {
   if(m.what === 'start') 

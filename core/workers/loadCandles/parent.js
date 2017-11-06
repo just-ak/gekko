@@ -44,7 +44,7 @@ const _ = require('lodash');
 
 module.exports = (config, callback) => {
   const child = fork(__dirname + '/child');
-
+  try {
   const message = {
     what: 'start',
     config
@@ -70,4 +70,18 @@ module.exports = (config, callback) => {
       done('ERROR, unable to load candles, please check the console.');
   });
   child.on('exit',function(m){ console.log(`loadCandles Child Exited`);});
+  child.on('error',function(err) {
+    console.log('CHILD Error  : '+err );
+    console.log('CHILD Error Stack :'+err.stack );});
+
+  child.on('uncaughtException',function(err) {
+    console.log('CHILD uncaughtException:'+err);});
+
+
+
+} catch (err) {
+  console.log('CHILD Error Try/Catch:'+err);
+  console.log('CHILD Error Stack :'+err.stack );
+  
+}
 }
