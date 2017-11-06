@@ -38,7 +38,11 @@ module.exports = (mode, config, callback) => {
       } //AK
     });
 
-    if (mode !='backtest') {
+    if (mode === 'realtimeHandler') {
+      child.on('exit', function(m) { console.log('Child existing :' + JSON.stringify(m,null,4));
+      handle.exit;
+    });
+    } else if (mode !='backtest') {
       /*
       Exit Child by using Message Handshake to perform end
       Currently only tested with the GUI Backtest
@@ -48,7 +52,7 @@ module.exports = (mode, config, callback) => {
       child.on('exit',function(m){ console.log(`Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
     }
 
-    child.on('error',function(err) {
+ q   child.on('error',function(err) {
       console.log('CHILD Error  : '+err );
       console.log('CHILD Error Stack :'+err.stack );});
 
