@@ -1,7 +1,7 @@
 var fork = require('child_process').fork;
 
 module.exports = (mode, config, callback) => {
-
+  try{
   if(process.execArgv.indexOf('--debug')   !== -1)   {  
     console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
     process.execArgv.push('--debug='   + (global.debugPort++)); 
@@ -13,7 +13,7 @@ module.exports = (mode, config, callback) => {
 
   var child = fork(__dirname + '/child');
 
-  try{
+  
 
     // How we should handle client messages depends
     // on the mode of the Pipeline that is being ran.
@@ -61,11 +61,11 @@ module.exports = (mode, config, callback) => {
 
 
 
-  } catch (err) {
-    console.log('CHILD Error Try/Catch:'+err);
-    console.log('CHILD Error Stack :'+err.stack );
-    
-  }
+ 
   return child;
+} catch (err) {
+  console.log('CHILD Error Try/Catch:'+err);
+  console.log('CHILD Error Stack :'+err.stack );
   
+}
 }
