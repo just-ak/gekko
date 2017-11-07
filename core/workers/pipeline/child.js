@@ -51,5 +51,5 @@ process.on('message', function(m) {
   else if(m.what === 'Exit-Child')  //AK
     process.exit();  //AK  
   else
-    console.log(`pipeline/${pipline.mode}/child/message`  + JSON.stringify(m));
+    console.log(`pipeline/${pipeline.mode}/child/message`  + JSON.stringify(m));
 });
