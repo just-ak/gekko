@@ -19,7 +19,8 @@ module.exports = cb => {
       if(status !== 0) {
         var err = new Error();
         
-        console.log('realtimeHandler - Child Process Died' + err.stack); //AK
+        console.log('realtimeHandler - Child Process Died :' );
+        console.log(err.stack); //AK
         cb('Child process has died.');
       }
       else
