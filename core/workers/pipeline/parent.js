@@ -1,6 +1,7 @@
 var fork = require('child_process').fork;
 
 module.exports = (mode, config, callback) => {
+  
   try{
   if(process.execArgv.indexOf('--debug')   !== -1)   {  
     console.log(`./workers/pipeline/Parent.js   About to Fork ${global.debugPort}`);  
@@ -42,7 +43,7 @@ module.exports = (mode, config, callback) => {
       child.on('exit', function() { 
         var err = new Error();
         
-        console.log('Child existing :' + JSON.stringify(err.stack,null,4));
+        console.log(mode + 'Child existing :' + JSON.stringify(err.stack,null,4));
       handle.exit;
     });
     } else if (mode !='backtest') {
@@ -56,19 +57,19 @@ module.exports = (mode, config, callback) => {
     }
 
     child.on('error',function(err) {
-      console.log('CHILD Error  : '+err );
-      console.log('CHILD Error Stack :'+err.stack );});
+      console.log(mode + 'CHILD Error  : '+err );
+      console.log(mode + 'CHILD Error Stack :'+err.stack );});
 
     child.on('uncaughtException',function(err) {
-      console.log('CHILD uncaughtException:'+err);});
+      console.log(mode + 'CHILD uncaughtException:'+err);});
 
 
 
  
   return child;
 } catch (err) {
-  console.log('CHILD Error Try/Catch:'+err);
-  console.log('CHILD Error Stack :'+err.stack );
+  console.log(mode + 'CHILD  Error Try/Catch:'+err);
+  console.log(mode + 'CHILD Error Stack :'+err.stack );
   
 }
 }
