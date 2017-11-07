@@ -11,6 +11,9 @@ var daterange = config.backtest.daterange;
 
 var to = moment.utc(daterange.to);
 var from = moment.utc(daterange.from);
+var dateStart = moment.utc(daterange.to);
+var dateEnd = moment.utc(daterange.from);
+
 
 if(to <= from)
   util.die('This daterange does not make sense.')
@@ -102,7 +105,9 @@ Market.prototype.processCandles = function(err, candles) {
     from: this.iterator.from.clone().add(this.batchSize, 'm'),
     to: this.iterator.from.clone().add(this.batchSize * 2, 'm').subtract(1, 's')
   }
+  var percent = ( dateEnd - from ) / ( dateEnd - dateStart ) * 100;
 
+  log.write(`Backtest : ${percent} ${from}  ${to}`);
   if(!this.closed)
     this.get();
 }
