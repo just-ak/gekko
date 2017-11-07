@@ -39,7 +39,10 @@ module.exports = (mode, config, callback) => {
     });
 
     if (mode === 'realtimeHandler') {
-      child.on('exit', function(m) { console.log('Child existing :' + JSON.stringify(m,null,4));
+      child.on('exit', function() { 
+        var err = new Error();
+        
+        console.log('Child existing :' + JSON.stringify(err.stack,null,4));
       handle.exit;
     });
     } else if (mode !='backtest') {
