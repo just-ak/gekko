@@ -52,7 +52,7 @@ module.exports = (mode, config, callback) => {
       child.on('exit',function(m){ console.log(`Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
     }
 
- q   child.on('error',function(err) {
+    child.on('error',function(err) {
       console.log('CHILD Error  : '+err );
       console.log('CHILD Error Stack :'+err.stack );});
 
