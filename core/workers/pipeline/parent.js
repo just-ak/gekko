@@ -53,7 +53,7 @@ module.exports = (mode, config, callback) => {
       */
       child.on('exit', handle.exit);
     } else {
-      child.on('exit',function(m){ console.log(`Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
+      child.on('exit',function(m){ console.log(mode + `Backtest Finished (Child Exited) Total Messages : ${totalMessages}`);});
     }
 
     child.on('error',function(err) {

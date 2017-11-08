@@ -19,14 +19,7 @@ config.watch = {
   exchange: 'poloniex',
   currency: 'USDT',
   asset: 'BTC',
-  pairs:[
-          {exchange:'poloniex',currency:'BTC',asset:'ETC'},
-          {exchange:'poloniex',currency:'BTC',asset:'VTC'},
-          {exchange:'poloniex',currency:'BTC',asset:'VRC'},
-        //  {exchange:'poloniex',currency:'BTC',asset:''},
-        //  {exchange:'poloniex',currency:'BTC',asset:''},
-        //  {exchange:'poloniex',currency:'BTC',asset:''},
-        ]
+
   // You can set your own tickrate (refresh rate).
   // If you don't set it, the defaults are 2 sec for
   // okcoin and 20 sec for all other exchanges.
