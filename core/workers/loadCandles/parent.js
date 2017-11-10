@@ -37,47 +37,56 @@ const _ = require('lodash');
 
 module.exports = (config, callback) => {
 
-  if(process.execArgv.indexOf('--debug')   !== -1)   {  
-    console.log(`core/workers/loadCandes/Parent.js   About to Fork ${global.debugPort}`);  
-    process.execArgv.push('--debug='   + (global.debugPort++)); 
+  if (process.execArgv.indexOf('--debug') !== -1) {
+    console.log(`core/workers/loadCandes/Parent.js   About to Fork ${global.debugPort}`);
+    process.execArgv.push('--debug=' + (global.debugPort++));
   }
-  if( process.execArgv.indexOf('--inspect') !== -1) { 
-    console.log(`core/workers/loadCandes/Parent.js   About to Fork ${global.debugPort}`);  
-    process.execArgv.push('--inspect=' + (global.debugPort++)); 
+  if (process.execArgv.indexOf('--inspect') !== -1) {
+    console.log(`core/workers/loadCandes/Parent.js   About to Fork ${global.debugPort}`);
+    process.execArgv.push('--inspect=' + (global.debugPort++));
+  }
+  try {
+    const child = fork(__dirname + '/child');
+
+    const message = {
+      what: 'start',
+      config
+    };
+
+    const done = _.once(callback);
+
+    child.on('message', function (m) {
+      if (m === 'ready') {
+        return child.send(message);
+      } else if(typeof m.log !== 'undefined') {
+        console.log('loadCandles : ' + m.log);
+      } else {
+      // else we are done and have candles!
+      done(null, m);
+      child.send('Exit-Child');
+      //AK child.kill('SIGINT');
+      }
+    });
+
+    child.on('exit', code => {
+      if (code !== 0) {
+        done('ERROR, unable to load candles, please check the console.');
+      } else {
+        console.log('loadCandles Child Exited');        
+      }
+    });
+    child.on('error', function (err) {
+      console.log(`CHILD loadCandles Error  : ${err}`);
+      console.log(`CHILD loadCandles Error Stack : ${err.stack}`);
+    });
+
+    child.on('uncaughtException', function (err) {
+      console.log(`CHILD  loadCandles  uncaughtException: ${err}`);
+    });
+
+  } catch (err) {
+    console.log(`CHILD loadCandles  Error Try/Catch: ${err}`);
+    console.log(`CHILD loadCandles Error Stack : ${err.stack}`);
   }
 
-  const child = fork(__dirname + '/child');
-
-  const message = {
-    what: 'start',
-    config
-  };
-
-  const done = _.once(callback);
-
-  child.on('message', function (m) {
-    if (m === 'ready') {
-      return child.send(message);
-    }
-    // else we are done and have candles!
-    done(null, m);
-    child.send('Exit-Child');
-    //AK child.kill('SIGINT');
-   
-  });
-
-  child.on('error', function (m) {
-    console.error('loadCandles had error' + JSON.stringify(m));
-   // done(null, m);
-    //AK child.kill('SIGINT');
-   
-  });
-
-  child.on('exit', code => {
-    if (code !== 0)
-      done('ERROR, unable to load candles, please check the console.');
-  });
-  child.on('exit', function (m) {
-    console.log(`loadCandles Child Exited`);
-  });
-}
+};

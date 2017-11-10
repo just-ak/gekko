@@ -20,9 +20,25 @@
 
 */
 
-console.log = function(d) { process.send({type:'log',log: 'CHILD LOG : ' + d})};
-console.warn = function(err) {  process.send({type:'log',log:'CHILD WARN : '+ err})};
-console.error = function(err) {  process.send({type:'log',log: 'CHILD ERROR : '+ err})};
+console.log = function (d) {
+  process.send({
+    type: 'log',
+    log: 'CHILD LOG : ' + d
+  });
+};
+console.warn = function (err) {
+  process.send({
+    type: 'log',
+    log: 'CHILD WARN : ' + err
+  });
+};
+console.error = function (err) {
+  process.send({
+    type: 'log',
+    log: 'CHILD ERROR : ' + err
+  });
+};
+
 
 //console.log('TEST-_-----___--___--- Should Have come from child')
 var start = (mode, config) => {
@@ -42,18 +58,20 @@ var start = (mode, config) => {
     config: config,
     mode: mode
   });
-}
+};
 
 process.send('ready');
 
 //AK Not fired : process.on('error',function(err) {console.log('IN CHILD Error:'+err);});
 //AK Not fired : process.on('uncaughtException',function(err) {console.log('IN CHILD uncaughtException:'+err);});
 
-process.on('message', function(m) {
-  if(m.what === 'start') 
+process.on('message', function (m) {
+  if (m.what === 'start') {
     start(m.mode, m.config);
-  else if(m.what === 'Exit-Child')  //AK
-    process.exit();  //AK  
-  else
-    console.log(`pipeline/child/message`  + JSON.stringify(m));
+  } else if (m === 'Exit-Child') { //AK
+    console.log('Received Exit-Child');
+    process.exit(); //AK  
+  } else {
+    console.log('pipeline/child/message' + JSON.stringify(m));
+  }
 });

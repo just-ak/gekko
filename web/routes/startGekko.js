@@ -16,11 +16,12 @@ const base = require('./baseConfig');
 module.exports = function *() {
   const mode = this.request.body.mode;
   const modewatch = this.request.body.watch;
-  console.log('Gekko :' + mode +' - '+ JSON.stringify(this.request.body,null,4));
+  //  console.log('Gekko :' + mode +' - '+ JSON.stringify(this.request.body,null,4)); //AK
   // check gekko manager
-  console.log('Gekko Manager :'  + JSON.stringify(gekkoManager,null,4));
+  //console.log('Gekko Manager :'  + JSON.stringify(gekkoManager,null,4)); //AK
   var newRequest =true;
 
+/*
 if (mode ===  'realtime') {
   console.log('Check Realtime');
   _.each(gekkoManager._list,function(gekkoItem){
@@ -33,28 +34,13 @@ if (mode ===  'realtime') {
           (gekkoItem.watch.asset === modewatch.asset  )) {
             // already exists.
           newRequest =false;
-          console.log('Already Exists,should ignore');
+            console.log('Already Exists,should ignore');
           } else {
             console.log('Not this one');
           }
         }
   });
 }
-/*
-  LOG      : Gekko Manager :{
-    "_list": [
-        {
-            "watch": {
-                "exchange": "poloniex",
-                "currency": "USDT",
-                "asset": "BTC"
-            },
-            "id": "039767504115905",
-            "startAt": "2017-11-05T13:28:54+00:00",
-            "latest": "2017-11-05T13:52:24+00:00",
-            "mode": "realtime",
-            "type": "watcher",
-            "firstCandle": {
 */
 
   let config = {};
@@ -100,10 +86,9 @@ if (mode ===  'realtime') {
       logType = 'papertrader';
   }
   const logger = new Logger(logType);
-  console.log('Gekko :' + JSON.stringify(config,null,4));
+ // console.log('Gekko :' + JSON.stringify(config,null,4)); //AK
   console.log('Gekko', id, 'started');
 
-  //AK if (newRequest) {
   const child = pipelineRunner(mode, config, (err, event) => {
 
     if(err) {
@@ -183,7 +168,7 @@ if (mode ===  'realtime') {
     }
     broadcast(wsEvent);
   });
-  //AK}
+
   const now = moment.utc().format();
 
   var gekko = {

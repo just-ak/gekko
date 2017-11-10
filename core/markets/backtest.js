@@ -11,8 +11,8 @@ var daterange = config.backtest.daterange;
 
 var to = moment.utc(daterange.to);
 var from = moment.utc(daterange.from);
-var dateStart = moment.utc(daterange.to);
-var dateEnd = moment.utc(daterange.from);
+var dateEnd = moment.utc(daterange.to);
+var dateStart = moment.utc(daterange.from);
 
 
 if(to <= from)
@@ -77,10 +77,10 @@ Market.prototype.processCandles = function(err, candles) {
     if(this.ended) {
       this.closed = true;
       this.reader.close();
-      process.send('Backtest Finished'); //AK
+      process.send('Child-Completed-Work'); //AK
       //this.emit('end'); //AK
     } else {
-      process.send('Backtest Finished - No Candles'); //AK
+      process.send('Child-Completed-Work'); //AK
       util.die('Query returned no candles (do you have local data for the specified range?)');
     }
   }
@@ -105,9 +105,14 @@ Market.prototype.processCandles = function(err, candles) {
     from: this.iterator.from.clone().add(this.batchSize, 'm'),
     to: this.iterator.from.clone().add(this.batchSize * 2, 'm').subtract(1, 's')
   }
-  var percent = ( dateEnd - from ) / ( dateEnd - dateStart ) * 100;
 
-  log.write(`Backtest : ${percent} ${from}  ${to}`);
+
+  tempFromDate = moment(this.iterator.from);
+  if (tempFromDate > dateEnd) {tempFromDate =  dateEnd}
+  var percentage_complete = 100 - ((dateEnd - tempFromDate  ) / (dateEnd - dateStart) * 100);
+  var percentage_rounded = (Math.round(percentage_complete * 100) / 100); 
+
+  log.write(`Backtest Last Iteration: ${percentage_rounded}% [ ${tempFromDate} ] ${dateStart} ---> ${dateEnd}`);
   if(!this.closed)
     this.get();
 }

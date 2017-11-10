@@ -11,9 +11,9 @@ if (process.execArgv.indexOf('--inspect') !== -1) {
   process.execArgv.push('--inspect=' + (global.debugPort++));
 }
 
-console.log = function(d) { process.send({type:'log',log: 'CHILD dateRangeScan LOG : ' + d})};
-console.warn = function(err) {  process.send({type:'log',log:'CHILD dateRangeScan WARN : '+ err})};
-console.error = function(err) {  process.send({type:'log',log: 'CHILD dateRangeScan ERROR : '+ err})};
+console.log = function(d) { process.send({type:'log',log: 'CHILD dateRangeScan LOG : ' + d});};
+console.warn = function(err) {  process.send({type:'log',log:'CHILD dateRangeScan WARN : '+ err});};
+console.error = function(err) {  process.send({type:'log',log: 'CHILD dateRangeScan ERROR : '+ err});};
 
 var ipc = require('relieve').IPCEE(process);
 try {
@@ -32,8 +32,8 @@ try {
     scan(
       (err, ranges, reader) => {
         reader.close();
-        ipc.send('ranges', ranges)
-        ipc.send('ranges Finished') //AK
+        ipc.send('ranges', ranges);
+        ipc.send('ranges Finished'); //AK
         //process.exit(0);  //AK
       }
     );

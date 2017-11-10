@@ -100,7 +100,8 @@ Market.prototype.processTrades = function(trades) {
 
   if(this.done) {
     log.info('Done importing!');
-    process.exit(0);
+    process.send('Child-Completed-Work');
+    //process.exit(0);
   }
 
   if(_.size(trades)) {

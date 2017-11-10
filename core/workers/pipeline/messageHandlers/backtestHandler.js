@@ -4,7 +4,7 @@
 
 module.exports = done => {
   var trades = [];
-  var roundtrips = []
+  var roundtrips = [];
   var candles = [];
   var report = false;
   
@@ -26,26 +26,15 @@ module.exports = done => {
       else if(typeof message.log !== 'undefined') {
         console.log('backtestHandler : ' +message.log);
       }
-      else if ((message === 'Backtest Finished') || (message === 'Backtest Finished - No Candles')) {
+      else if (message === 'Child-Completed-Work') {
         done(null, {
           trades: trades,
           candles: candles,
           report: report,
           roundtrips: roundtrips
         });
+        console.log('backtestHandler : Complete ');
       }
-    },
-    exit: status => {
-      if(status !== 0)
-        done('Child process has died.');
-        /* else
-          done(null, {
-            trades: trades,
-            candles: candles,
-            report: report,
-            roundtrips: roundtrips
-          });
-        */
     }
-  }
-}
+  };
+};
