@@ -7,11 +7,14 @@ module.exports = cb => {
     message: message => {
 
       if(message.type === 'error') {
-        console.log(message.error);
+        var err = new Error();
+        console.log('realtimeHandler : ' + message.error); //
+        console.log(err.stack); //AK
         cb(message.error);
       }
-
-      else
+      if(typeof message.log !== 'undefined') {
+        console.log('realtimeHandler : ' + message.log);
+      } else
         cb(null, message);
 
     },

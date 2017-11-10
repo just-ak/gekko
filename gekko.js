@@ -19,7 +19,7 @@
   it is working.
 
 */
-/*
+
 console.log(`
 ______   ________  __    __  __    __   ______
 /      \\ /        |/  |  /  |/  |  /  | /      \\
@@ -41,13 +41,13 @@ console.log = function(d) {
   log_file.write('LOG      : ' + utilWriteOverLog.format.apply(null, arguments) + '\n');
 };
 console.warn = function(err) { 
-  log_file.write('WARNING : ' + utilWriteOverLog.format.apply(null, arguments) + '\n' +  + JSON.stringify(err));
+  log_file.write('WARNING : ' + utilWriteOverLog.format.apply(null, arguments) + '\n' +  JSON.stringify(err));
 };
 console.error = function(err) { 
   log_file.write('ERROR   : ' + utilWriteOverLog.format.apply(null, arguments) + '\n'  + JSON.stringify(err));
 };
 
-*/
+
 global.debugPort = 9230;
 console.log(`
     ______   ________  __    __  __    __   ______

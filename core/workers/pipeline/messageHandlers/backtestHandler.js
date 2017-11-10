@@ -23,7 +23,10 @@ module.exports = done => {
       else if(message.type === 'report')
         report = message.report;
 
-      else if (message === 'Backtest Finished') {
+      else if(typeof message.log !== 'undefined') {
+        console.log('backtestHandler : ' +message.log);
+      }
+      else if ((message === 'Backtest Finished') || (message === 'Backtest Finished - No Candles')) {
         done(null, {
           trades: trades,
           candles: candles,

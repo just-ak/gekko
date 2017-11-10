@@ -20,7 +20,11 @@
 
 */
 
+console.log = function(d) { process.send({type:'log',log: 'CHILD LOG : ' + d})};
+console.warn = function(err) {  process.send({type:'log',log:'CHILD WARN : '+ err})};
+console.error = function(err) {  process.send({type:'log',log: 'CHILD ERROR : '+ err})};
 
+//console.log('TEST-_-----___--___--- Should Have come from child')
 var start = (mode, config) => {
   var util = require(__dirname + '/../../util');
 

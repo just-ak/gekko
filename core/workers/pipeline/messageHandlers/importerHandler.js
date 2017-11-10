@@ -13,9 +13,9 @@ module.exports = cb => {
         cb(message.error);
         console.error(message.error);
       }
-
-      else if(message.type === 'log')
-        console.log(message.log);
+      else if(typeof message.log !== 'undefined') {
+        console.log('importHandler : ' +message.log);
+      }
     },
     exit: status => {
       if(status !== 0){

@@ -9,6 +9,7 @@ const util = require('../util');
 const dirs = util.dirs();
 const config = util.getConfig();
 
+
 const exchangeChecker = require(dirs.core + 'exchangeChecker');
 const cp = require(dirs.core + 'cp');
 
@@ -59,7 +60,6 @@ Market.prototype._read = _.once(function() {
 
 Market.prototype.get = function() {
   var future = moment().add(1, 'minute').unix();
-
   this.reader.get(
     this.latestTs,
     future,
@@ -72,6 +72,7 @@ Market.prototype.processCandles = function(err, candles) {
   var amount = _.size(candles);
   if(amount === 0) {
     // no new candles!
+    //console.log(`/core/markets/leech : ${JSON.stringify(config.watch)} No New Candles :` ); //AK
     return;
   }
 

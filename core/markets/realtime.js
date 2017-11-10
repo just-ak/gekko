@@ -9,11 +9,15 @@ var config = util.getConfig();
 const slug = config.watch.exchange.toLowerCase();
 const exchange = exchangeChecker.getExchangeCapabilities(slug);
 
-if(!exchange)
-  util.die(`Unsupported exchange: ${slug}`)
+if(!exchange) {
+  console.log(`/core/markets/realtime/  ${slug} `);
+  util.die(`Unsupported exchange: ${slug}`);
+}
 
 var error = exchangeChecker.cantMonitor(config.watch);
-if(error)
+if(error) {
+  console.log(`/core/markets/realtime/  ${slug} `); //AK
+  console.log(error.stack);  //AK
   util.die(error, true);
-
+}
 module.exports = require(dirs.budfox + 'budfox');
