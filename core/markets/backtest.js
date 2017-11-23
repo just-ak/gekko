@@ -113,6 +113,7 @@ Market.prototype.processCandles = function(err, candles) {
   var percentage_rounded = (Math.round(percentage_complete * 100) / 100); 
 
   log.write(`Backtest Last Iteration: ${percentage_rounded}% [ ${tempFromDate} ] ${dateStart} ---> ${dateEnd}`);
+  
   if(!this.closed)
     this.get();
 }

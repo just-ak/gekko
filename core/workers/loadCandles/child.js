@@ -1,7 +1,7 @@
 
-console.log = function(d) { process.send({type:'log',log: 'CHILD LOG : ' + d})};
-console.warn = function(err) {  process.send({type:'log',log:'CHILD WARN : '+ err})};
-console.error = function(err) {  process.send({type:'log',log: 'CHILD ERROR : '+ err})};
+console.log = function(d) { process.send({type:'log',log: 'CHILD LOG : ' + d});};
+console.warn = function(err) {  process.send({type:'log',log:'CHILD WARN : '+ err});};
+console.error = function(err) {  process.send({type:'log',log: 'CHILD ERROR : '+ err});};
 
 var start = (config, candleSize, daterange) => {
   var util = require(__dirname + '/../../util');
@@ -18,8 +18,8 @@ var start = (config, candleSize, daterange) => {
   var load = require(dirs.tools + 'candleLoader');
   load(config.candleSize, candles => {
     process.send(candles);
-  })
-}
+  });
+};
 
 process.send('ready');
 
